@@ -1,6 +1,6 @@
 <?php
 
-namespace MJS\ChangeLogger;
+namespace Finanzcheck\ChangeLogger;
 
 use Propel\Generator\Builder\Om\ObjectBuilder;
 use Propel\Generator\Exception\InvalidArgumentException;

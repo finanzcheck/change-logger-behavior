@@ -1,5 +1,5 @@
 {
-  "name": "marcj/change-logger-behavior",
+  "name": "finanzcheck/change-logger-behavior",
   "description": "A behavior allowing you to log one or more columns in a extra logging table like the versionable behavior for Propel2.",
   "require": {
     "propel/propel": "2.0.*@dev"
@@ -9,7 +9,12 @@
   },
   "autoload": {
     "psr-4": {
-      "MJS\\ChangeLogger\\": "src/"
+      "Finanzcheck\\ChangeLogger\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Finanzcheck\\ChangeLogger\\": "tests/"
     }
   },
   "authors": [
@@ -20,6 +25,6 @@
   ],
   "extra": {
     "name": "change_logger",
-    "class": "\\MJS\\ChangeLogger\\ChangeLoggerBehavior"
+    "class": "\\Finanzcheck\\ChangeLogger\\ChangeLoggerBehavior"
   }
 }

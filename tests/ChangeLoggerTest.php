@@ -1,6 +1,6 @@
 <?php
 
-namespace Propel\Tests\Generator\Behavior\ChangeLogger;
+namespace Finanzcheck\ChangeLogger;
 
 use Propel\Generator\Util\QuickBuilder;
 use Propel\Tests\TestCase;
@@ -16,7 +16,7 @@ class ChangeLoggerTest extends TestCase
         <column name="id" required="true" primaryKey="true" autoIncrement="true" type="INTEGER" />
         <column name="title" type="VARCHAR" size="100" primaryString="true" />
         <column name="age" type="INTEGER" />
-        <behavior name="MJS\ChangeLogger\ChangeLoggerBehavior">
+        <behavior name="Finanzcheck\ChangeLogger\ChangeLoggerBehavior">
             <parameter name="log" value="title"/>
             <parameter name="comment" value="true"/>
             <parameter name="created_by" value="true"/>
@@ -26,7 +26,7 @@ class ChangeLoggerTest extends TestCase
         <column name="id" required="true" primaryKey="true" autoIncrement="true" type="INTEGER" />
         <column name="title" type="VARCHAR" size="100" primaryString="true" />
         <column name="age" type="INTEGER" />
-        <behavior name="MJS\ChangeLogger\ChangeLoggerBehavior">
+        <behavior name="Finanzcheck\ChangeLogger\ChangeLoggerBehavior">
             <parameter name="log" value="title, age"/>
         </behavior>
     </table>

@@ -19,7 +19,7 @@ into a extra logger table, defined for each column you have specified in the `lo
 If you haven't installed this behavior through composer, you need to specify the full class name as behavior name:
 
 ```xml
-    <behavior name="\MJS\ChangeLogger\ChangeLoggerBehavior">
+    <behavior name="\Finanzcheck\ChangeLogger\ChangeLoggerBehavior">
 ```
 
 You can also define multiple columns. Each column gets a own logger table.
