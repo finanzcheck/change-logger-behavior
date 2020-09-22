@@ -30,6 +30,24 @@ class ChangeLoggerTest extends TestCase
             <parameter name="log" value="title, age"/>
         </behavior>
     </table>
+    <table name="changelogger_behavior_aliased">
+        <column name="id" required="true" primaryKey="true" autoIncrement="true" type="INTEGER" />
+        <column name="title" type="VARCHAR" size="100" primaryString="true" />
+        <behavior name="Finanzcheck\ChangeLogger\ChangeLoggerBehavior">
+            <parameter name="log" value="title"/>
+            <parameter name="table_alias" value="foo"/>
+        </behavior>
+    </table>
+    <table name="changelogger_behavior_multiple_aliases">
+        <column name="id" required="true" primaryKey="true" autoIncrement="true" type="INTEGER" />
+        <column name="alpha" type="INTEGER" />
+        <column name="beta" type="INTEGER" />
+        <column name="gamma" type="INTEGER" />
+        <behavior name="Finanzcheck\ChangeLogger\ChangeLoggerBehavior">
+            <parameter name="log" value="alpha, beta, gamma"/>
+            <parameter name="table_alias" value="beta: bar, gamma: baz"/>
+        </behavior>
+    </table>
 </database>
 EOF;
             QuickBuilder::buildSchema($schema);
@@ -173,4 +191,58 @@ EOF;
         $this->assertEquals(2, $lastVersion->getAge());
     }
 
+    public function testAliasedTableName()
+    {
+        $this->assertTrue(class_exists('\ChangeloggerBehaviorAliased'));
+        $this->assertFalse(class_exists('\ChangeloggerBehaviorAliasedTitleLog'));
+        $this->assertTrue(class_exists('\FooTitleLog'));
+
+        $item = new \ChangeloggerBehaviorAliased();
+        $item->setTitle('Initial');
+        $item->save();
+
+        $this->assertEquals(0, \FooTitleLogQuery::create()->count());
+
+        $item->setTitle('Changed');
+        $item->save();
+
+        $this->assertEquals(1, \FooTitleLogQuery::create()->count());
+
+        $lastVersion = \FooTitleLogQuery::create()->findOne();
+        $this->assertEquals('Initial', $lastVersion->getTitle());
+    }
+
+    public function testMultilpeTableNameAliases()
+    {
+        $this->assertTrue(class_exists('\ChangeloggerBehaviorMultipleAliases'));
+        $this->assertTrue(class_exists('\ChangeloggerBehaviorMultipleAliasesAlphaLog'));
+        $this->assertTrue(class_exists('\BarBetaLog'));
+        $this->assertTrue(class_exists('\BazGammaLog'));
+
+        $item = new \ChangeloggerBehaviorMultipleAliases();
+        $item->setAlpha(1);
+        $item->setBeta(1);
+        $item->setGamma(1);
+        $item->save();
+
+        $this->assertEquals(0, \ChangeloggerBehaviorMultipleAliasesAlphaLogQuery::create()->count());
+        $this->assertEquals(0, \BarBetaLogQuery::create()->count());
+        $this->assertEquals(0, \BazGammaLogQuery::create()->count());
+
+        $item->setAlpha(2);
+        $item->setBeta(2);
+        $item->setGamma(2);
+        $item->save();
+
+        $this->assertEquals(1, \ChangeloggerBehaviorMultipleAliasesAlphaLogQuery::create()->count());
+        $this->assertEquals(1, \BarBetaLogQuery::create()->count());
+        $this->assertEquals(1, \BazGammaLogQuery::create()->count());
+
+        $lastAlphaVersion = \ChangeloggerBehaviorMultipleAliasesAlphaLogQuery::create()->findOne();
+        $this->assertEquals(1, $lastAlphaVersion->getAlpha());
+        $lastBetaVersion = \BarBetaLogQuery::create()->findOne();
+        $this->assertEquals(1, $lastBetaVersion->getBeta());
+        $lastGammaVersion = \BazGammaLogQuery::create()->findOne();
+        $this->assertEquals(1, $lastGammaVersion->getGamma());
+    }
 }
