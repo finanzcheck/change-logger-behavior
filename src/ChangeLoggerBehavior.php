@@ -27,7 +27,9 @@ class ChangeLoggerBehavior extends Behavior
         'comment_column' => 'log_comment',
 
         'version_column' => 'version',
-        'log' => ''
+        'log' => '',
+
+        'table_alias' => ''
     );
 
     /**
@@ -329,8 +331,11 @@ if (\$$varName) {
         $table = $this->getTable();
         $database = $table->getDatabase();
 
+        [$globalAlias, $tableAliases] = $this->parseAliases($this->getParameter('table_alias'));
+
         foreach ($this->getColumns() as $column) {
-            $logTableName = sprintf('%s_%s_log', $table->getName(), $column->getName());
+            $tableAlias = $globalAlias ?: $tableAliases[$column->getName()] ?? $table->getName();
+            $logTableName = sprintf('%s_%s_log', $tableAlias, $column->getName());
 
             if ($database->hasTable($logTableName)) {
                 $logTable = $database->getTable($logTableName);
@@ -471,5 +476,26 @@ if (\$$varName) {
                 )
             );
         }
+    }
+
+    /**
+     * Parses the parameter string and returns a two-element array.
+     * The first element is the global alias, or null if none was given.
+     * The second element is the list of individual aliases indexed by column name, which may be empty.
+     */
+    private function parseAliases(string $paramString): array
+    {
+        if (!empty($paramString) && strpos($paramString, ':') === false) {
+            // global alias
+            return [$paramString, []];
+        }
+        // individual aliases
+        $aliases = [];
+        $aliasChunks = array_filter(array_map('trim', explode(',', $paramString)));
+        foreach ($aliasChunks as $chunk) {
+            [$columnName, $alias] = array_map('trim', explode(':', $chunk));
+            $aliases[$columnName] = $alias;
+        }
+        return [null, $aliases];
     }
 }
