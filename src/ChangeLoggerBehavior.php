@@ -37,7 +37,7 @@ class ChangeLoggerBehavior extends Behavior
      */
     protected $logTables = [];
 
-    public function modifyTable()
+    public function modifyTable(): void
     {
         $this->addLogTables();
     }
