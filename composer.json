@@ -2,10 +2,11 @@
   "name": "finanzcheck/change-logger-behavior",
   "description": "A behavior allowing you to log one or more columns in a extra logging table like the versionable behavior for Propel2.",
   "require": {
-    "propel/propel": "2.0.*@dev"
+    "propel/propel": "2.0.0-beta2",
+    "mikey179/vfsstream": "^1.6"
   },
   "require-dev": {
-    "phpunit/phpunit": "~4.0"
+    "phpunit/phpunit": "^9.5"
   },
   "autoload": {
     "psr-4": {

@@ -7,7 +7,7 @@ use Propel\Tests\TestCase;
 
 class ChangeLoggerTest extends TestCase
 {
-    public function setUp()
+    public function setUp(): void
     {
         if (!class_exists('\ChangeloggerBehaviorSingle')) {
             $schema = <<<EOF
