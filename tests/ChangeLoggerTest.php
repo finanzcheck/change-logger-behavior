@@ -2,8 +2,8 @@
 
 namespace Finanzcheck\ChangeLogger;
 
+use PHPUnit\Framework\TestCase;
 use Propel\Generator\Util\QuickBuilder;
-use Propel\Tests\TestCase;
 
 class ChangeLoggerTest extends TestCase
 {
