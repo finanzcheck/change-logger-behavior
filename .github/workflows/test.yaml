@@ -15,4 +15,5 @@ jobs:
         with:
           php-version: ${{ matrix.php }}
       - uses: ramsey/composer-install@v2
-      - run: vendor/bin/phpunit
+      - name: Run tests
+        run: vendor/bin/phpunit

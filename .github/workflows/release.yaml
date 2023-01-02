@@ -1,0 +1,37 @@
+name: Release
+
+on:
+  push:
+    branches: ["master"]
+
+jobs:
+  test:
+    name: PHP ${{ matrix.php }}
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        php: [ '8.0', '8.1', '8.2' ]
+    steps:
+      - uses: actions/checkout@v3
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+      - uses: ramsey/composer-install@v2
+      - name: Run tests
+        run: vendor/bin/phpunit
+      - name: Determine version number
+        id: get_version
+        run: echo "version=$(cat composer.json | jq -r .version)" >> $GITHUB_OUTPUT
+      - name: Tag new version
+        uses: mathieudutour/github-tag-action@v6.1
+        id: tag_version
+        with:
+          # the prefix "v" is automatically added by the action
+          custom_tag: ${{ steps.get_version.outputs.version }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Create GitHub Release
+        uses: ncipollo/release-action@v1
+        with:
+          tag: ${{ steps.tag_version.outputs.new_tag }}
+          body: ${{ steps.tag_version.outputs.changelog }}
+          skipIfReleaseExists: true
