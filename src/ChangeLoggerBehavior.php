@@ -23,10 +23,12 @@ class ChangeLoggerBehavior extends Behavior
         'comment' => 'false',
 
         'created_at_column' => 'log_created_at',
+        'created_at_index' => 'false',
+
         'created_by_column' => 'log_created_by',
         'comment_column' => 'log_comment',
-
         'version_column' => 'version',
+
         'log' => '',
 
         'table_alias' => ''
@@ -449,6 +451,13 @@ if (\$$varName) {
                 array(
                     'name' => $this->getParameter('created_at_column'),
                     'type' => 'TIMESTAMP'
+                )
+            );
+        }
+        if ('true' === $this->getParameter('created_at_index')) {
+            $table->addIndex(
+                array(
+                    'columns' => [['name' => $this->getParameter('created_at_column')]]
                 )
             );
         }

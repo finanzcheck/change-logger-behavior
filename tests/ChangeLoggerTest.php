@@ -20,6 +20,7 @@ class ChangeLoggerTest extends TestCase
             <parameter name="log" value="title"/>
             <parameter name="comment" value="true"/>
             <parameter name="created_by" value="true"/>
+            <parameter name="created_by_index" value="true"/>
         </behavior>
     </table>
     <table name="changelogger_behavior_multiple">
