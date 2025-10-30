@@ -3,7 +3,7 @@
   "version": "2.1.0",
   "description": "A behavior allowing you to log one or more columns in a extra logging table like the versionable behavior for Propel2.",
   "require": {
-    "perplorm/perpl": "^2.4",
+    "perplorm/perpl": "dev-main",
     "mikey179/vfsstream": "^1.6"
   },
   "require-dev": {
